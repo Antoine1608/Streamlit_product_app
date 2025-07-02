@@ -9,7 +9,7 @@ import pandas as pd
 import numpy as np
 
 import plotly.express as px
-
+from PIL import Image, ImageDraw
 
 # In[6]:
 
@@ -35,7 +35,7 @@ df = pd.DataFrame({
 
 
 # Sidebar filters
-st.sidebar.title('filters')
+st.sidebar.title('Filters')
 regions = st.sidebar.multiselect('Select region', df['Region'].unique(), default=df['Region'].unique())
 product = st.sidebar.multiselect('Select product', df['Product'].unique(), default=df['Product'].unique())
 
@@ -78,9 +78,22 @@ with col2 :
 st.subheader("DataFrame")
 st.dataframe(filtered_df)
 
-
 # In[ ]:
 
 
+file = st.sidebar.file_uploader("Choose a file")
 
+# In[ ]:
+
+if file is not None:
+    # Ouvrir l'image
+    st.subheader("Image")
+    img = Image.open(file)
+
+    # Redimensionner l'image à 500 pixels de largeur tout en conservant les proportions
+    width, height = img.size
+    new_width = 500
+    new_height = int((new_width / width) * height)
+    img = img.resize((new_width, new_height))
+    st.image(img)#,width=250,height=250)
 
